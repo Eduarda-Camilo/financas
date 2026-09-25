@@ -27,3 +27,7 @@ Os exemplos iniciais são demonstrativos. Ajustes permite apagá-los para começ
 `app.js`: telas, interação e persistência. `register.js`: tabela de registro. `register-model.js` e `finance.js`: validação e cálculos independentes da interface. `style.css`: estilos responsivos. `server.js`: servidor HTTP local. `finance.test.js`: testes financeiros.
 
 Validados: cálculos automatizados, renderização desktop/mobile, seletor de pessoa, tipo de registro e mudança de mês com parcelas no navegador.
+
+## Publicar na Vercel
+
+A Vercel deve usar o preset **Other** e servir a raiz como arquivos estáticos. O `vercel.json` fixa essa configuração para evitar que `server.js` seja executado como função serverless. O servidor em `server.js` é somente para rodar localmente com `npm start` (porta 5173).
