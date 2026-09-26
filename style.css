@@ -15,3 +15,33 @@ main{padding-top:30px;padding-bottom:110px}.page-heading{justify-content:center;
 /* Keep the viewport fixed horizontally and make the calendar a native-feeling mobile screen. */
 html,body{width:100%;max-width:100%;overflow-x:hidden}#app,main{min-width:0;max-width:100%}.register-panel,.sheet-scroll{max-width:100%}.sheet-scroll{overflow-x:auto;overscroll-behavior-x:contain}.sheet-current-installment{text-align:center;font-size:12px;color:#826477;background:#fff}.current-installment-heading{text-align:center}.entry-table .sheet-current-installment{padding:8px 5px}.cloud-form{display:grid;gap:12px;max-width:520px;margin:16px 0}.cloud-form label{display:grid;gap:7px;color:#786571;font-size:12px}.cloud-form button{justify-self:start}.settings #cloud-status{min-height:18px;color:#a04f77;font-size:11px}.settings h3{font-size:14px;margin-top:26px}
 @media(max-width:760px){html,body{overscroll-behavior-x:none}.app-navigation{justify-content:space-between;gap:0}.app-navigation button{flex:1;min-width:0}.calendar-mobile-screen-backdrop{padding:0;align-items:stretch;justify-content:stretch;background:#fffafd;backdrop-filter:none}.modal.calendar-mobile-screen{width:100%;height:100%;max-height:100dvh;max-width:none;border:0;border-radius:0;padding:calc(24px + env(safe-area-inset-top)) 22px calc(24px + env(safe-area-inset-bottom));box-shadow:none;display:flex;flex-direction:column;justify-content:center}.calendar-mobile-screen .close{position:fixed;right:16px;top:calc(12px + env(safe-area-inset-top));width:44px;height:44px;background:#f8eaf1;border-radius:50%}.calendar-mobile-screen h2{margin-top:18px;font-size:25px}.calendar-mobile-screen .month-grid{gap:12px}.calendar-mobile-screen .month-grid button{min-height:54px}.calendar-mobile-screen .year-picker{margin:28px 0 22px}}
+
+/* Registro sem rolagem lateral: cada lançamento vira uma linha-cartão em telas estreitas. */
+@media(max-width:760px){
+ html,body{overflow-x:clip!important;overscroll-behavior-x:none!important;max-width:100vw!important}
+ #app,main{width:100%;min-width:0;max-width:100vw;overflow-x:clip}
+ .app-navigation{position:fixed!important;top:auto!important;bottom:0!important;left:0!important;right:0!important;inset-inline:0!important;transform:none!important;width:100vw!important;max-width:100vw!important;min-width:0!important;z-index:1000!important;display:flex!important;justify-content:space-between!important;gap:0!important;padding-left:4px!important;padding-right:4px!important}
+ .app-navigation button{flex:1 1 20%!important;width:20%!important;min-width:0!important;max-width:20%!important;padding-left:0!important;padding-right:0!important;white-space:nowrap;font-size:clamp(7px,2.2vw,9px)!important}
+ .register-panel{width:100%;min-width:0;overflow:hidden}
+ .register-panel .sheet-scroll{width:100%;max-width:100%;overflow:hidden!important;touch-action:pan-y!important;overscroll-behavior-x:none!important}
+ .register-panel .entry-table{display:block;width:100%!important;min-width:0!important;max-width:100%;table-layout:auto;border-collapse:separate;border-spacing:0}
+ .register-panel .entry-table thead{display:none}
+ .register-panel .entry-table tbody{display:grid;width:100%;gap:9px;padding:8px}
+ .register-panel .entry-table tbody tr{display:grid;width:100%;min-width:0;grid-template-columns:minmax(0,1.2fr) minmax(0,.9fr) 42px 54px minmax(0,.9fr) 28px;align-items:stretch;overflow:hidden;border:1px solid #eee5eb;border-radius:11px;background:#fff;box-shadow:0 2px 8px #67475b08}
+ .register-panel .entry-table tbody tr:not(:has(.sheet-current-installment)){grid-template-columns:minmax(0,1.15fr) minmax(0,.9fr) minmax(0,1fr) minmax(0,.9fr) 28px}
+ .register-panel .entry-table tbody tr>th{display:none}
+ .register-panel .entry-table tbody td{display:flex;flex-direction:column;justify-content:center;min-width:0;width:auto;height:auto;min-height:62px;padding:5px 4px;border:0;border-right:1px solid #f1e9ee;background:transparent;overflow:hidden}
+ .register-panel .entry-table tbody td::before{content:attr(data-label);display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:3px;color:#9a8190;font-size:clamp(7px,2vw,9px);line-height:1.2}
+ .register-panel .entry-table tbody td[data-label="Descrição"]{padding-left:6px}
+ .register-panel .entry-table tbody td[data-label="Status"]{grid-column:1/-1;min-height:0;padding:3px 8px 6px;border:0;border-top:1px solid #f4edf1;font-size:9px;white-space:normal}
+ .register-panel .entry-table tbody td[data-label="Detalhes"]{display:flex;align-items:center;justify-content:center;padding:0;border:0}
+ .register-panel .entry-table tbody td[data-label="Detalhes"]::before{content:none}
+ .register-panel .entry-table .icon-button{width:26px;height:32px}
+ .register-panel .entry-table input{width:100%;min-width:0;height:36px;padding:4px 2px;font-size:clamp(10px,3vw,13px);letter-spacing:-.2px}
+ .register-panel .entry-table .sheet-current-installment,.register-panel .entry-table .sheet-month-value{text-align:center;align-items:center;padding-left:2px;padding-right:2px;font-size:clamp(9px,2.7vw,12px);overflow-wrap:anywhere}
+ .register-panel .entry-table .sheet-month-value{color:#9d5276}
+ .register-panel .entry-table .row-error .row-state{color:#b04462;background:#fff6f7}
+ .register-panel .sheet-footer{min-width:0;gap:8px;padding:12px}
+ .register-panel .sheet-footer>span{min-width:0;font-size:8px}
+ .register-panel .sheet-footer strong{font-size:15px}
+}
