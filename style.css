@@ -56,3 +56,17 @@ html.mobile-device .purchase-detail-mobile.mobile-fullscreen-modal{overflow:hidd
 html.mobile-device .purchase-detail-mobile.mobile-fullscreen-modal .schedule{flex:1 1 auto!important;min-height:80px!important;max-height:none!important;width:100%!important;overflow-y:auto!important;overflow-x:hidden!important;margin:0 0 12px!important;overscroll-behavior:contain!important;-webkit-overflow-scrolling:touch}
 html.mobile-device .purchase-detail-mobile.mobile-fullscreen-modal .danger{flex:0 0 auto!important;align-self:flex-start!important;margin-top:auto!important;max-width:100%!important;white-space:normal}
 html.mobile-device .calendar-mobile-screen.mobile-fullscreen-modal{justify-content:center!important}
+
+/* The whole app always matches the physical mobile viewport; only the sheet scrolls sideways. */
+html.mobile-device{width:100%;max-width:100%;overflow-x:hidden!important;overscroll-behavior-x:none!important}
+html.mobile-device body{position:relative;width:100%;max-width:100%;min-width:0;margin:0!important;overflow-x:hidden!important;overscroll-behavior-x:none!important;touch-action:auto}
+html.mobile-device #app{display:block;width:100%;max-width:100%;min-width:0;overflow-x:hidden!important}
+html.mobile-device main{display:block;width:auto!important;max-width:none!important;min-width:0!important;margin:0!important;padding:20px 20px calc(105px + env(safe-area-inset-bottom))!important;overflow-x:hidden!important}
+html.mobile-device .page-heading,html.mobile-device .register-controls,html.mobile-device .register-panel,html.mobile-device .salary-register,html.mobile-device .sheet-hints{width:100%!important;max-width:100%!important;min-width:0!important;margin-left:0!important;margin-right:0!important}
+html.mobile-device .page-heading .month-control,html.mobile-device .register-controls select,html.mobile-device .fixed-method{width:100%!important;max-width:100%!important;min-width:0!important}
+html.mobile-device .register-panel{overflow:hidden!important}
+html.mobile-device .register-panel .sheet-scroll{display:block;width:100%!important;max-width:100%!important;min-width:0!important;overflow-x:auto!important;overflow-y:auto!important;overscroll-behavior:contain!important;touch-action:pan-x pan-y!important;contain:inline-size;-webkit-overflow-scrolling:touch}
+html.mobile-device .register-panel .entry-table{width:830px!important;min-width:830px!important;max-width:none!important}
+html.mobile-device #app-navigation-root{position:fixed!important;inset:auto 0 0!important;width:100%!important;max-width:100%!important;min-width:0!important;z-index:1000!important;overflow:hidden!important;pointer-events:none}
+html.mobile-device #app-navigation-root .app-navigation{position:relative!important;inset:auto!important;transform:none!important;width:100%!important;max-width:100%!important;min-width:0!important;margin:0!important;border-radius:0!important;pointer-events:auto}
+html.mobile-device #overlay{position:relative;z-index:1100}
