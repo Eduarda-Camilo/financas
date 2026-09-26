@@ -40,3 +40,7 @@ html,body{width:100%;max-width:100%;overflow-x:hidden}#app,main{min-width:0;max-
  .register-panel .sheet-footer>span{min-width:0;font-size:9px}
  .register-panel .sheet-footer strong{font-size:18px}
 }
+
+/* Fixed navigation lives outside the clipped, scrollable page content. */
+#app-navigation-root{position:static;z-index:1000}
+@media(max-width:760px){#app-navigation-root{position:fixed!important;inset:auto 0 0!important;width:100vw!important;max-width:100vw!important;z-index:1000!important;pointer-events:none}#app-navigation-root .app-navigation{position:relative!important;inset:auto!important;transform:none!important;display:flex!important;width:100%!important;max-width:100%!important;min-width:0!important;height:76px;border-radius:0;border-width:1px 0 0;padding:8px 4px max(10px,env(safe-area-inset-bottom));box-shadow:none;pointer-events:auto}#app-navigation-root .app-navigation button{flex:1 1 20%!important;width:20%!important;min-width:0!important;max-width:20%!important;padding-left:0!important;padding-right:0!important;white-space:nowrap;font-size:clamp(7px,2.2vw,9px)!important}}

@@ -6,16 +6,16 @@ export function createRegister(ctx){
  let person='duda',method='credit',drafts={},edits={};
  const key=()=>`${getMonth()}/${person}/${method}`;
  const valueText=n=>(n/100).toFixed(2).replace('.',',');
- const fields=()=>method==='credit'?['description','amount','count']:['description','amount','date'];
- function newDraft(){return {key:crypto.randomUUID(),values:{description:'',amount:'',count:'1',date:''}};}
+ const fields=()=>method==='credit'?['description','amount','count','part']:['description','amount','date'];
+ function newDraft(){return {key:crypto.randomUUID(),values:{description:'',amount:'',count:'1',part:'1',date:''}};}
  function draftList(){return drafts[key()]??=(Array.from({length:5},newDraft));}
  const selectedRows=()=>rows().filter(t=>t.person===person&&t.method===method);
  function rowHTML(t,index,draft){
   const original=t?getData().purchases.find(p=>p.id===t.id):null;
   const editing=original?edits[original.id]:draft;
-  const v=editing?.values||{description:original.description,amount:valueText(original.amount),count:String(original.count||1),date:original.date||''};
+  const v=editing?.values||{description:original?.description||'',amount:original?valueText(original.amount):'',count:String(original?.count||1),part:String(t?.part||original?.startPart||1),date:original?.date||''};
   const label=`linha ${index}`;
-  return `<tr ${original?`data-purchase="${original.id}"`:`data-draft="${draft.key}"`} class="${editing?.error?'row-error':''}"><th scope="row">${index}</th><td data-label="Descrição"><input data-field="description" aria-label="Descrição, ${label}" value="${esc(v.description)}" placeholder="${original?'Sem descrição':'Digite uma compra…'}" maxlength="120"></td><td data-label="Total"><input data-field="amount" inputmode="decimal" aria-label="Valor total, ${label}" value="${esc(v.amount)}" placeholder="0,00"></td>${method==='credit'?`<td data-label="Parcelas"><input data-field="count" type="number" min="1" max="36" aria-label="Parcelas, ${label}" value="${esc(v.count)}"></td><td data-label="Parcela atual" class="sheet-current-installment">${t?`${t.part}/${t.count}`:'—'}</td>`:`<td data-label="Data"><input data-field="date" type="date" aria-label="Data da compra, ${label}" value="${esc(v.date)}" min="${original?.month||getMonth()}-01" max="${lastDay(original?.month||getMonth())}"></td>`}<td data-label="Neste mês" class="sheet-month-value">${t?money(t.amount):'—'}</td><td data-label="Status" class="row-state" aria-live="polite">${editing?.error?esc(editing.error):original?'Salvo':'Nova linha'}</td><td data-label="Detalhes">${original?`<button class="icon-button" data-detail="${original.id}" aria-label="Detalhes da compra, ${label}">${icon('right')}</button>`:''}</td></tr>`;
+  return `<tr ${original?`data-purchase="${original.id}"`:`data-draft="${draft.key}"`} class="${editing?.error?'row-error':''}"><th scope="row">${index}</th><td data-label="Descrição"><input data-field="description" aria-label="Descrição, ${label}" value="${esc(v.description)}" placeholder="${original?'Sem descrição':'Digite uma compra…'}" maxlength="120"></td><td data-label="Total"><input data-field="amount" inputmode="decimal" aria-label="Valor total, ${label}" value="${esc(v.amount)}" placeholder="0,00"></td>${method==='credit'?`<td data-label="Parcelas"><input data-field="count" type="number" min="1" max="36" aria-label="Parcelas, ${label}" value="${esc(v.count)}"></td><td data-label="Parcela atual" class="sheet-current-installment"><input data-field="part" type="number" min="1" max="${esc(v.count)}" step="1" aria-label="Parcela atual, ${label}" value="${esc(v.part)}"></td>`:`<td data-label="Data"><input data-field="date" type="date" aria-label="Data da compra, ${label}" value="${esc(v.date)}" min="${original?.month||getMonth()}-01" max="${lastDay(original?.month||getMonth())}"></td>`}<td data-label="Neste mês" class="sheet-month-value">${t?money(t.amount):'—'}</td><td data-label="Status" class="row-state" aria-live="polite">${editing?.error?esc(editing.error):original?'Salvo':'Nova linha'}</td><td data-label="Detalhes">${original?`<button class="icon-button" data-detail="${original.id}" aria-label="Detalhes da compra, ${label}">${icon('right')}</button>`:''}</td></tr>`;
  }
  function lastDay(month){const [y,m]=month.split('-').map(Number);return `${month}-${new Date(y,m,0).getDate()}`;}
  function salaryHTML(){const d=getData(),own=Object.hasOwn(d.monthlySalaries,getMonth()),salary=salaryForMonth(d,getMonth());return `<section class="panel salary-register"><div class="sheet-heading"><div><h2>Salário recebido</h2><p>O valor deste mês substitui o padrão só neste mês.</p></div><span class="salary-source">${own?'Valor personalizado':'Usando o padrão'}</span></div><div class="sheet-scroll"><table class="entry-table salary-table"><thead><tr><th scope="col">Referência</th><th scope="col">Valor recebido (R$)</th><th scope="col">Status</th></tr></thead><tbody><tr><td>Salário de ${getMonth().split('-').reverse().join('/')}</td><td><input id="monthly-salary" inputmode="decimal" aria-label="Salário recebido neste mês" placeholder="0,00" value="${salary===null?'':valueText(salary)}"></td><td id="salary-status" role="status">${salary===null?'Não informado':own?'Salvo para este mês':'Valor padrão'}</td></tr></tbody></table></div><div class="sheet-footer"><span>Padrão: ${d.defaultSalary===null?'não informado':money(d.defaultSalary)}</span>${own?'<button class="text-button" data-register-action="salary-default">Usar padrão neste mês</button>':'<button class="text-button" data-page="settings">Editar padrão</button>'}</div></section>`;}
@@ -25,7 +25,7 @@ export function createRegister(ctx){
  function setStatus(message){const el=document.querySelector('#register-status');if(el)el.textContent=message;}
  function commit(tr){
   const state=remember(tr),d=getData(),existing=d.purchases.find(p=>p.id===tr.dataset.purchase);
-  const touched=state.values.amount||state.values.description||state.values.date||Number(state.values.count||1)!==1;
+  const touched=state.values.amount||state.values.description||state.values.date||Number(state.values.count||1)!==1||Number(state.values.part||1)!==1;
   if(!existing&&!touched){state.error='';tr.classList.remove('row-error');tr.querySelector('.row-state').textContent='Nova linha';return;}
   try{
    const purchase=purchaseFromRow(state.values,{person,method,month:getMonth(),existing,parseMoney,id:crypto.randomUUID()});
@@ -38,7 +38,7 @@ export function createRegister(ctx){
    tr.querySelectorAll('[data-field]').forEach(input=>input.removeAttribute('aria-invalid'));
    tr.querySelector('.row-state').textContent='Salvo';
    const installment=installments(purchase).find(t=>t.month===getMonth());
-   tr.querySelector('.sheet-month-value').textContent=installment?money(installment.amount):'Não entra neste mês';const currentInstallment=tr.querySelector('.sheet-current-installment');if(currentInstallment)currentInstallment.textContent=installment?`${installment.part}/${installment.count}`:'—';
+   tr.querySelector('.sheet-month-value').textContent=installment?money(installment.amount):'Não entra neste mês';const currentInstallment=tr.querySelector('[data-field=part]');if(currentInstallment)currentInstallment.value=String(installment?.part??purchase.startPart??1);currentInstallment?.setAttribute('max',String(purchase.count));
    tr.lastElementChild.innerHTML=`<button class="icon-button" data-detail="${purchase.id}" aria-label="Detalhes desta compra">${icon('right')}</button>`;
    document.querySelector('#register-total').textContent=money(selectedRows().reduce((sum,t)=>sum+t.amount,0));
    setStatus('Salvo · dashboard atualizado');
