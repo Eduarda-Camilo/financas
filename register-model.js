@@ -6,7 +6,7 @@ export function purchaseFromRow(values,{person,method,month,existing,parseMoney,
  if(!Number.isInteger(count)||count<1||count>36)throw Error('Use de 1 a 36 parcelas.');
  if(amount<count)throw Error('Cada parcela precisa ter pelo menos R$ 0,01.');
  const firstMonth=existing?.month||month;
- const date=values.date||'';
+ const date=values.date??existing?.date??'';
  if(date){
   const d=new Date(date+'T12:00:00');
   if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||Number.isNaN(d.getTime())||d.toISOString().slice(0,10)!==date)throw Error('Informe uma data válida.');

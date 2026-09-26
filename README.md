@@ -1,33 +1,31 @@
 # leve — finanças pessoais
 
-Aplicação web mobile first em português, com branco, rosa e glassmorphism. Sem dependências de instalação. Requer Node.js para servir os arquivos.
+Aplicação web mobile first em português, publicada como site estático na Vercel.
 
-## Executar
+## Executar e verificar
 
 ```sh
 npm start
+npm test
 ```
 
-Abra http://localhost:5173. Para verificar os cálculos: `npm test`.
+## Armazenamento persistente
+
+Sem uma conta conectada, os dados ficam no armazenamento local do navegador. Para sincronizar entre celulares e sobreviver à limpeza dos dados do navegador:
+
+1. Crie um projeto Supabase e confirme o endereço de e-mail.
+2. No SQL Editor do projeto, execute `supabase/setup.sql`.
+3. Copie Project URL e a chave **publishable** (ou anon legacy) em Ajustes no app. Nunca use a `service_role`/secret key no navegador.
+4. Crie uma conta com e-mail e senha na tela Ajustes e confirme o e-mail, se solicitado. Ao primeiro login, os dados locais existentes são copiados para a conta; em logins seguintes, os dados da nuvem são carregados.
+
+Cada conta acessa apenas seu próprio registro pela política RLS. Para mais detalhes, consulte Supabase → Project Settings → API. A URL e chave pública ficam neste aparelho; sessão também é salva para reabrir a conta.
 
 ## Funcionalidades
 
-- Resumo mensal, seletor de mês e ano e navegação por setas.
-- Crédito e débito da Duda separados da fatura compartilhada.
-- Aba Registro com tabela editável, filtros de mês, pessoa e tipo, atalhos Tab/Enter e colagem de células de planilhas.
-- Para Duda: crédito, débito e salário recebido. Para as demais pessoas: apenas crédito.
-- Salário padrão em Ajustes e valor recebido editável para cada mês na aba Registro.
-- Parcelamento em centavos inteiros, com sobras distribuídas nas primeiras parcelas, e detalhes da compra original.
-- Exclusão de compras com confirmação, exportação JSON e armazenamento local no navegador.
+- Resumo, registro, transações, pessoas e ajustes com navegação responsiva.
+- Crédito e débito separados e salário mensal.
+- Parcelas mensais encadeadas; edição altera a compra original e seus meses seguintes.
+- Exportação JSON.
+- Navegação pelo botão voltar do navegador/celular.
 
-Os exemplos iniciais são demonstrativos. Ajustes permite apagá-los para começar. O salário padrão vale nos meses sem um valor próprio; os valores próprios permanecem independentes do padrão. Compras lançadas pela tabela iniciam no mês selecionado; o campo de data é opcional e, quando preenchido, deve pertencer ao mês inicial da compra. Não há regra de fechamento bancário. Dados não são sincronizados entre dispositivos. O JSON exportado serve como cópia dos registros; importação não está implementada.
-
-## Estrutura
-
-`app.js`: telas, interação e persistência. `register.js`: tabela de registro. `register-model.js` e `finance.js`: validação e cálculos independentes da interface. `style.css`: estilos responsivos. `server.js`: servidor HTTP local. `finance.test.js`: testes financeiros.
-
-Validados: cálculos automatizados, renderização desktop/mobile, seletor de pessoa, tipo de registro e mudança de mês com parcelas no navegador.
-
-## Publicar na Vercel
-
-A Vercel deve usar o preset **Other** e servir a raiz como arquivos estáticos. O `vercel.json` fixa essa configuração para evitar que `server.js` seja executado como função serverless. O servidor em `server.js` é somente para rodar localmente com `npm start` (porta 5173).
+Os dados de demonstração podem ser apagados em Ajustes.
